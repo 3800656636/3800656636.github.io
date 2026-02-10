@@ -12,11 +12,11 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
         with:
-          node-version: '20'
-      - name: Install dependencies
-        run: pip install --upgrade Gmeek
+          python-version: '3.10' # 强制使用兼容性最好的 Python 3.10
+      - name: Install gmeek
+        run: pip install gmeek # 注意这里是小写
       - name: Generate blog
         run: gmeek-build ${{ secrets.GITHUB_TOKEN }} ${{ github.repository }}
