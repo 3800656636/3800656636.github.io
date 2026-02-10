@@ -15,8 +15,9 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.10' # 强制使用兼容性最好的 Python 3.10
-      - name: Install gmeek
-        run: pip install gmeek # 注意这里是小写
+          python-version: '3.10'
+      - name: Install gmeek from Source
+        # 这一步直接从作者的 GitHub 仓库安装，跳过 PyPI 索引，最稳
+        run: pip install git+https://github.com/Meekdai/Gmeek.git
       - name: Generate blog
         run: gmeek-build ${{ secrets.GITHUB_TOKEN }} ${{ github.repository }}
