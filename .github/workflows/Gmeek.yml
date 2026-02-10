@@ -10,14 +10,25 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event.repository.owner.id == github.event.sender.id
     steps:
-      - name: Checkout
+      - name: Checkout Blog Repo
         uses: actions/checkout@v4
+
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.10'
-      - name: Install gmeek from Source
-        # 这一步直接从作者的 GitHub 仓库安装，跳过 PyPI 索引，最稳
-        run: pip install git+https://github.com/Meekdai/Gmeek.git
-      - name: Generate blog
-        run: gmeek-build ${{ secrets.GITHUB_TOKEN }} ${{ github.repository }}
+
+      - name: Clone Gmeek Engine
+        # 直接克隆本体仓库到本地
+        run: git clone https://github.com/Meekdai/Gmeek.git GmeekEngine
+
+      - name: Install Requirements
+        # 进入引擎目录安装它所需的依赖
+        run: |
+          cd GmeekEngine
+          pip install -r requirements.txt
+
+      - name: Generate Blog Content
+        # 直接运行引擎中的 gmeek.py 脚本
+        run: |
+          python GmeekEngine/gmeek.py ${{ secrets.GITHUB_TOKEN }} ${{ github.repository }}
